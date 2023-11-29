@@ -1,0 +1,237 @@
+---
+output: pdf_document
+params:
+  PROJECT_ID:
+    input: text
+    label: Project ID
+    value: 'project_name_and_output_file'
+classoption: 
+  - landscape
+  - a3 paper
+knit: (
+  function(inputFile, encoding) {
+  
+  NAME = 'Jovanovich'
+  
+    rmarkdown::render( 
+      input       = inputFile, 
+      encoding    = encoding, 
+      params      = list(PROJECT_ID = NAME),      
+      output_file = NAME) })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r project_setup, message=FALSE, warning=FALSE, include=FALSE}
+library(flextable)
+library(reactable)
+library(pander)
+library(knitr)
+library(forcats)
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(stringr)
+library(tools)
+library(readr)
+library(anytime)
+library(data.table)
+library(here)
+library(tinytex)
+library(gt)
+library(kableExtra)
+library(scales)
+library(pander)
+here()
+
+files <- list.files(here("outputs"),pattern = "*.csv")
+files
+
+data <- read.csv(here("outputs", files))
+
+data <- data[,-c(1)]
+
+data$DATE <- as.POSIXct(data$DATE)
+
+data[7:10] <- sapply(data[7:10], function(x) percent(x, accuracy=1))
+
+data$PROJECT <- as.factor(data$PROJECT)
+
+levels(data$PROJECT) ##run to view all project names##
+
+PROJECT_SITE = params
+
+if(PROJECT_SITE == "Barry Moore"){
+  PROJECT = data[data$PROJECT == "Barry Moore", ]
+}
+
+if(PROJECT_SITE == "Beyer"){
+  PROJECT = data[data$PROJECT == "Beyer", ]
+}
+
+if(PROJECT_SITE == "Bidle"){
+  PROJECT = data[data$PROJECT == "Bidle", ]
+}
+
+if(PROJECT_SITE == "Brown"){
+  PROJECT = data[data$PROJECT == "Brown", ]
+}
+
+if(PROJECT_SITE == "Brown Phase V"){
+  PROJECT = data[data$PROJECT == "Brown Phase V", ]
+}
+
+if(PROJECT_SITE == "Caddle-Berry"){
+  PROJECT = data[data$PROJECT == "Caddle-Berry", ]
+}
+
+if(PROJECT_SITE == "Cobos/Whitmore"){
+  PROJECT = data[data$PROJECT == "Cobos/Whitmore", ]
+}
+
+if(PROJECT_SITE == "Cornelius"){
+  PROJECT = data[data$PROJECT == "Cornelius", ]
+}
+
+if(PROJECT_SITE == "D Stout"){
+  PROJECT = data[data$PROJECT == "D Stout", ]
+}
+
+if(PROJECT_SITE == "Farnsworth"){
+  PROJECT = data[data$PROJECT == "Farnsworth", ]
+}
+
+if(PROJECT_SITE == "Farrand"){
+  PROJECT = data[data$PROJECT == "Farrand", ]
+}
+
+if(PROJECT_SITE == "Gearhart"){
+  PROJECT = data[data$PROJECT == "Gearhart", ]
+}
+
+if(PROJECT_SITE == "Johnson"){
+  PROJECT = data[data$PROJECT == "Johnson", ]
+}
+
+if(PROJECT_SITE == "Jones"){
+  PROJECT = data[data$PROJECT == "Jones", ]
+}
+
+if(PROJECT_SITE == "Jovanovich"){
+  PROJECT = data[data$PROJECT == "Jovanovich", ]
+}
+
+if(PROJECT_SITE == "L.Moore Wetland"){
+  PROJECT = data[data$PROJECT == "L.Moore Wetland", ]
+}
+
+if(PROJECT_SITE == "Landon Moore"){
+  PROJECT = data[data$PROJECT == "Landon Moore", ]
+}
+
+if(PROJECT_SITE == "Matthews"){
+  PROJECT = data[data$PROJECT == "Matthews", ]
+}
+
+if(PROJECT_SITE == "Murray 1"){
+  PROJECT = data[data$PROJECT == "Murray 1", ]
+}
+
+if(PROJECT_SITE == "Murray 2"){
+  PROJECT = data[data$PROJECT == "Murray 2", ]
+}
+
+if(PROJECT_SITE == "Paradise Creek East"){
+  PROJECT = data[data$PROJECT == "Paradise Creek East", ]
+}
+
+if(PROJECT_SITE == "Pettitt"){
+  PROJECT = data[data$PROJECT == "Pettitt", ]
+}
+
+if(PROJECT_SITE == "Rawls"){
+  PROJECT = data[data$PROJECT == "Rawls", ]
+}
+
+if(PROJECT_SITE == "Rice"){
+  PROJECT = data[data$PROJECT == "Rice", ]
+}
+
+if(PROJECT_SITE == "Spencer Wetland"){
+  PROJECT = data[data$PROJECT == "Spencer Wetland", ]
+}
+
+if(PROJECT_SITE == "Stout Brothers"){
+  PROJECT = data[data$PROJECT == "Stout Brothers", ]
+}
+
+if(PROJECT_SITE == "Uhlenkott"){
+  PROJECT = data[data$PROJECT == "Uhlenkott", ]
+}
+
+if(PROJECT_SITE == "Ulibarri"){
+  PROJECT = data[data$PROJECT == "Ulibarri", ]
+}
+
+if(PROJECT_SITE == "Weber"){
+  PROJECT = data[data$PROJECT == "Weber", ]
+}
+
+if(PROJECT_SITE == "Whitmore"){
+  PROJECT = data[data$PROJECT == "Whitmore", ]
+}
+
+if(PROJECT_SITE == "WSU Riparian (Rose Creek)"){
+  PROJECT = data[data$PROJECT == "WSU Riparian (Rose Creek)", ]
+}
+
+SITE_NAME <- PROJECT[1, "PROJECT"]
+
+PLANNER <- PROJECT[1, "PROJECT.PLANNER"]
+
+
+colnames(PROJECT)[colnames(PROJECT) == "PROJECT.PLANNER"] <- "PROJECT PLANNER"
+colnames(PROJECT)[colnames(PROJECT) == "STEMS.PER.ACRE"] <- "STEMS PER ACRE"
+colnames(PROJECT)[colnames(PROJECT) == "X..WOODY.COVER"] <- "% WOODY COVER"
+colnames(PROJECT)[colnames(PROJECT) == "X..VIGOROUS"] <- "% VIGOROUS"
+colnames(PROJECT)[colnames(PROJECT) == "X..STRESSED"] <- "% STRESSED"
+colnames(PROJECT)[colnames(PROJECT) == "X..DEAD"] <- "% DEAD"
+colnames(PROJECT)[colnames(PROJECT) == "AVERAGE.BROWSE.CODE"] <- "AVERAGE BROWSE CODE"
+colnames(PROJECT)[colnames(PROJECT) == "AVERAGE.GRASS.CODE"] <- "AVERAGE GRASS CODE"
+colnames(PROJECT)[colnames(PROJECT) == "CROSS.SECTION.MOST.COMMON.PLANT.COMMUNITY"] <- "CROSS SECTION MOST COMMON PLANT COMMUNITY"
+colnames(PROJECT)[colnames(PROJECT) == "GREENLINE.MOST.COMMON.PLANT.COMMUNITY"] <- "GREENLINE MOST COMMON PLANT COMMUNITY"
+colnames(PROJECT)[colnames(PROJECT) == "GENERAL.SITE.NOTES"] <- "GENERAL SITE NOTES"
+colnames(PROJECT)[colnames(PROJECT) == "TREE.TUBES"] <- "TREE TUBES"
+colnames(PROJECT)[colnames(PROJECT) == "WEED.MAT"] <- "WEED MAT"
+colnames(PROJECT)[colnames(PROJECT) == "WEED.MAT.ROLL.SIZE"] <- "WEED MAT ROLL SIZE"
+colnames(PROJECT)[colnames(PROJECT) == "TUBE.TYPE"] <- "TUBE TYPE"
+colnames(PROJECT)[colnames(PROJECT) == "PLANTS..0.5.M"] <- "PLANTS <0.5 M"
+colnames(PROJECT)[colnames(PROJECT) == "PLANTS.0.5..1.M"] <- "PLANTS 0.5- 1 M"
+colnames(PROJECT)[colnames(PROJECT) == "PLANTS.1.2.M"] <- "PLANTS 1-2 M"
+colnames(PROJECT)[colnames(PROJECT) == "PLANTS.2.M.OR.TALLER"] <- "PLANTS 2 M OR TALLER"
+
+options(digits = 2)
+
+rownames(PROJECT) <- NULL
+
+colnames(PROJECT)[colnames(PROJECT) == "DATE"] <- "YEAR"
+
+PROJECT$YEAR <- format(PROJECT$YEAR, format="%Y")
+
+```
+
+# Vegetation Monitoring Status Report
+
+## `r SITE_NAME` Project
+
+## Planner: `r PLANNER`
+
+```{r, echo=FALSE}
+dwide <- PROJECT[,c(2:23), ]
+dlong <- setNames(data.frame(t(dwide[ , -1])), dwide[ , 1])
+kbl(dlong, booktabs = T) %>% 
+  kable_styling(latex_options = c("striped", "hold_position")) %>% 
+  column_spec(1:23, width = "10em")
+```
